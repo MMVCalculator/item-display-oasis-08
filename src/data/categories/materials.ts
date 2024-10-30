@@ -3,7 +3,7 @@ import { Item } from "../../types/Item";
 export const materials: Item[] = [
   {
     name: "Empty Bottle",
-    image: "https://pic.in.th/image/Materials-%281%29.FLHri6"
+    image: "https://postimg.cc/ZWV97651"
   },
   {
     name: "Rag",
