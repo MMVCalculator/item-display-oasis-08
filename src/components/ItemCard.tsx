@@ -11,13 +11,16 @@ export function ItemCard({ item }: ItemCardProps) {
       <CardHeader>
         <CardTitle className="text-lg truncate">{item.name}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <img
           src={item.image}
           alt={item.name}
           className="w-full h-48 object-contain"
           loading="lazy"
         />
+        <div className="text-center text-sm text-gray-600">
+          Quantity: {item.quantity || 0}
+        </div>
       </CardContent>
     </Card>
   );
