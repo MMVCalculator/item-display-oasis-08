@@ -4,7 +4,7 @@ export const materials: Item[] = [
   {
     name: "Empty Bottle",
     image: "https://whitepaper-th.morningmoonvillage.com/~gitbook/image?url=https%3A%2F%2F3405632122-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Mi6LXCVY3A30JRGM2nH%252Fuploads%252FNcXSr3OB6cFRXKXfpYrn%252Fbottle.png%3Falt%3Dmedia%26token%3Dae832fe8-7bd2-48a8-a1c7-aa91beaaec60&width=300&dpr=1&quality=100&sign=4ce5385d&sv=1",
-    quantity: 10
+    quantity: 1000000000
   },
   {
     name: "Rag",
