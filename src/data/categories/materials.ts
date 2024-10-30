@@ -135,22 +135,22 @@ export const materials: Item[] = [
   },
   {
     name: "Illuminated soul fragment",
-    image: "https://pic.in.th/image/Materials-%2833%29.FLHWZE" // Using same image as Soul fragment temporarily
+    image: "https://pic.in.th/image/Materials-%2834%29.FLHifO"
   },
   {
     name: "Rune",
-    image: "https://pic.in.th/image/Materials-%2833%29.FLHWZE" // Using placeholder image
+    image: "https://pic.in.th/image/Materials-%2835%29.FLHpnA"
   },
   {
     name: "Empowered Rune",
-    image: "https://pic.in.th/image/Materials-%2833%29.FLHWZE" // Using placeholder image
+    image: "https://pic.in.th/image/Materials-%2836%29.FLHYIc"
   },
   {
     name: "Divine Rune",
-    image: "https://pic.in.th/image/Materials-%2833%29.FLHWZE" // Using placeholder image
+    image: "https://pic.in.th/image/Materials-%2837%29.FLHkOP"
   },
   {
     name: "Extinct Plant Seed",
-    image: "https://pic.in.th/image/Materials-%2833%29.FLHWZE" // Using placeholder image
+    image: "https://pic.in.th/image/Materials-%2838%29.FLHAcp"
   }
 ];
