@@ -1,3 +1,5 @@
+
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Item } from "@/types/Item";
 
@@ -18,8 +20,10 @@ export function ItemCard({ item }: ItemCardProps) {
           className="w-full h-48 object-contain"
           loading="lazy"
         />
-        <div className="text-center text-sm text-gray-600">
-          Quantity: {item.quantity || 0}
+        <div className="text-center">
+          <Button variant="outline" size="sm">
+            ตรวจสอบ
+          </Button>
         </div>
       </CardContent>
     </Card>
