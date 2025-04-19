@@ -15,6 +15,12 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/tokens/, "/api/v2/tokens"),
       },
+      // กำหนด proxy สำหรับ item-mmv.netlify.app
+      "/api/item-mmv": {
+        target: "https://item-mmv.netlify.app",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/item-mmv/, ""),
+      },
     },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(
