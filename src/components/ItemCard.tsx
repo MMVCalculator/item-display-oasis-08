@@ -24,7 +24,8 @@ export function ItemCard({ item }: ItemCardProps) {
     queryKey: ["tokenInfo", tokenAddress],
     queryFn: async () => {
       try {
-        // ใช้ proxy server ที่เราตั้งค่าไว้ใน vite.config.ts
+        // เรียกใช้ API จาก kubscan ผ่าน proxy ในไฟล์ vite.config.ts
+        // ใช้ endpoint /api/tokens ที่เรา proxy ไว้แล้ว ไม่ใช่ item-mmv.netlify.app
         const response = await fetch(`/api/tokens/${tokenAddress}`);
 
         if (!response.ok) {

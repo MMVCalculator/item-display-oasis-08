@@ -21,6 +21,13 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/item-mmv/, ""),
       },
+      // กำหนด proxy สำหรับ item-mmv.netlify.app/api/tokens
+      "^/api/item-mmv/api/tokens/.*": {
+        target: "https://www.kubscan.com",
+        changeOrigin: true,
+        rewrite: (path) =>
+          path.replace(/^\/api\/item-mmv\/api\/tokens/, "/api/v2/tokens"),
+      },
     },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(
