@@ -21,7 +21,11 @@ export function ItemCard({ item }: ItemCardProps) {
     item.address || "0x5BF5eea0CE540db3986fa58ee47D685104b7c2FB";
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const { data: tokenInfo, isLoading } = useQuery({
+  const {
+    data: tokenInfo,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["tokenInfo", tokenAddress],
     queryFn: async () => {
       try {
@@ -75,6 +79,10 @@ export function ItemCard({ item }: ItemCardProps) {
             ) : apiError ? (
               <div className="p-4 rounded bg-red-50 text-red-600 border border-red-200">
                 <p>{apiError}</p>
+                <p className="mt-2 text-sm">
+                  ขณะนี้ไม่สามารถเชื่อมต่อกับ API ได้ อาจเกิดจากปัญหา CORS
+                  หรือเซิร์ฟเวอร์มีปัญหา
+                </p>
                 <div className="mt-4">
                   <Button
                     variant="outline"
