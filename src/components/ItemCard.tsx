@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
+import { fetchTokenInfo } from "@/lib/api";
 
 interface ItemCardProps {
   item: Item;
@@ -24,21 +25,15 @@ export function ItemCard({ item }: ItemCardProps) {
     queryKey: ["tokenInfo", tokenAddress],
     queryFn: async () => {
       try {
-        // เรียกใช้ API จาก kubscan ผ่าน proxy ในไฟล์ vite.config.ts
-        // ใช้ endpoint /api/tokens ที่เรา proxy ไว้แล้ว ไม่ใช่ item-mmv.netlify.app
-        const response = await fetch(`/api/tokens/${tokenAddress}`);
-
-        if (!response.ok) {
-          const errorMessage = `API เกิดข้อผิดพลาด: ${response.status} ${response.statusText}`;
-          setApiError(errorMessage);
-          throw new Error(errorMessage);
-        }
-
+        // ใช้ฟังก์ชัน fetchTokenInfo ที่เราสร้างไว้ใน api.ts
+        const data = await fetchTokenInfo(tokenAddress);
         setApiError(null);
-        return response.json();
+        return data;
       } catch (error) {
         console.error("Error fetching token info:", error);
-        if (!apiError) {
+        if (error instanceof Error) {
+          setApiError(error.message);
+        } else {
           setApiError("ไม่สามารถเชื่อมต่อกับ API ได้ โปรดลองใหม่ภายหลัง");
         }
         throw error;
