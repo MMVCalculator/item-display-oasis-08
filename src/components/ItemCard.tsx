@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,17 +16,35 @@ interface ItemCardProps {
 
 export function ItemCard({ item }: ItemCardProps) {
   const [open, setOpen] = useState(false);
+  const tokenAddress =
+    item.address || "0x5BF5eea0CE540db3986fa58ee47D685104b7c2FB";
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  const { data: tokenInfo } = useQuery({
-    queryKey: ['tokenInfo', item.name],
+  const { data: tokenInfo, isLoading } = useQuery({
+    queryKey: ["tokenInfo", tokenAddress],
     queryFn: async () => {
-      if (item.name !== 'Illuminated Soul Fragment') return null;
-      
-      const response = await fetch('https://www.kubscan.com/api/v2/tokens/0xbb546B399b1767883b083Fef9E69a16dd0185cDD');
-      if (!response.ok) throw new Error('Failed to fetch token info');
-      return response.json();
+      try {
+        // ใช้ proxy server ที่เราตั้งค่าไว้ใน vite.config.ts
+        const response = await fetch(`/api/tokens/${tokenAddress}`);
+
+        if (!response.ok) {
+          const errorMessage = `API เกิดข้อผิดพลาด: ${response.status} ${response.statusText}`;
+          setApiError(errorMessage);
+          throw new Error(errorMessage);
+        }
+
+        setApiError(null);
+        return response.json();
+      } catch (error) {
+        console.error("Error fetching token info:", error);
+        if (!apiError) {
+          setApiError("ไม่สามารถเชื่อมต่อกับ API ได้ โปรดลองใหม่ภายหลัง");
+        }
+        throw error;
+      }
     },
-    enabled: open && item.name === 'Illuminated Soul Fragment'
+    enabled: open,
+    retry: 1,
   });
 
   return (
@@ -44,29 +61,83 @@ export function ItemCard({ item }: ItemCardProps) {
             loading="lazy"
           />
           <div className="text-center">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setOpen(true)}
-            >
+            <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
               ตรวจสอบ
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      <Dialog open={open && item.name === 'Illuminated Soul Fragment'} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{item.name} Token Information</DialogTitle>
           </DialogHeader>
           <div className="mt-4">
-            {tokenInfo ? (
-              <pre className="whitespace-pre-wrap text-sm">
-                {JSON.stringify(tokenInfo, null, 2)}
-              </pre>
+            {isLoading ? (
+              <p>กำลังโหลดข้อมูล...</p>
+            ) : apiError ? (
+              <div className="p-4 rounded bg-red-50 text-red-600 border border-red-200">
+                <p>{apiError}</p>
+                <div className="mt-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    onClick={() =>
+                      window.open(
+                        `https://www.kubscan.com/token/${tokenAddress}`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    ดูข้อมูลที่ Kubscan โดยตรง
+                  </Button>
+                </div>
+              </div>
+            ) : tokenInfo ? (
+              <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="font-semibold">ชื่อ:</div>
+                  <div>{tokenInfo.name}</div>
+
+                  <div className="font-semibold">สัญลักษณ์:</div>
+                  <div>{tokenInfo.symbol}</div>
+
+                  <div className="font-semibold">ที่อยู่:</div>
+                  <div className="truncate">{tokenInfo.address}</div>
+
+                  <div className="font-semibold">จำนวนผู้ถือ:</div>
+                  <div>{tokenInfo.holders}</div>
+
+                  <div className="font-semibold">Decimals:</div>
+                  <div>{tokenInfo.decimals}</div>
+
+                  <div className="font-semibold">จำนวนทั้งหมด:</div>
+                  <div>{tokenInfo.total_supply}</div>
+
+                  <div className="font-semibold">ประเภท:</div>
+                  <div>{tokenInfo.type}</div>
+                </div>
+
+                <div className="pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    onClick={() =>
+                      window.open(
+                        `https://www.kubscan.com/token/${tokenAddress}`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    ดูเพิ่มเติมที่ Kubscan
+                  </Button>
+                </div>
+              </div>
             ) : (
-              <p>Loading token information...</p>
+              <p>ไม่พบข้อมูล</p>
             )}
           </div>
         </DialogContent>

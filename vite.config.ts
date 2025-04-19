@@ -8,11 +8,18 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      // กำหนด proxy สำหรับ kubscan API
+      "/api/tokens": {
+        target: "https://www.kubscan.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/tokens/, "/api/v2/tokens"),
+      },
+    },
   },
-  plugins: [
-    react(),
-    mode === 'development' && componentTagger(),
-  ].filter(Boolean),
+  plugins: [react(), mode === "development" && componentTagger()].filter(
+    Boolean
+  ),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
